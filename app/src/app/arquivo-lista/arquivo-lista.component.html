@@ -1,0 +1,49 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+    <li class="breadcrumb-item active">Arquivos</li>
+  </ol>
+</nav>
+
+<h2>{{title}}</h2>
+<div *ngIf="loading; else list">
+  <p>Não existe arquivo disponiveis</p>
+</div>
+
+<ng-template #list>
+  <div *ngIf="feedback.message" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+  <table mat-table [dataSource]="arquivos">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let item"> {{ item.id }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let item"> {{ item.nome }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="criadoEm">
+      <mat-header-cell *matHeaderCellDef> Criado </mat-header-cell>
+      <mat-cell *matCellDef="let item"> {{ item.criadoEm }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="valido">
+      <mat-header-cell *matHeaderCellDef> Valido </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <div>
+          <ng-container *ngIf="item.valido"><mat-icon color="primary">task_alt</mat-icon></ng-container>
+          <ng-container *ngIf="!item.valido"><mat-icon color="warn">unpublished</mat-icon></ng-container>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="enviado">
+      <mat-header-cell *matHeaderCellDef> Enviado </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <div>
+          <ng-container *ngIf="item.enviado"><mat-icon color="primary">task_alt</mat-icon></ng-container>
+          <ng-container *ngIf="!item.enviado"><mat-icon color="warn">unpublished</mat-icon></ng-container>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </table>
+</ng-template>

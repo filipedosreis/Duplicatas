@@ -1,0 +1,74 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+    <li class="breadcrumb-item active">Upload de Arquivo</li>
+  </ol>
+</nav>
+
+<h2>{{title}}</h2>
+
+<div *ngIf="feedback.message" class="alert alert-{{feedback.type}}" style="white-space: pre-line">{{ feedback.message }}</div>
+<div class="container d-flex justify-content-center">
+  <div class="mt-5 row justify-content-center">
+
+    <div class="col-10 mb-3">
+      <label class="px-3">Selecione o arquivo: </label>
+      <input type="file" (change)="selectFile($event)" />
+    </div>
+
+    <div class="col-2">
+      <button mat-raised-button color="primary" style="float: right" (click)="uploadFile()">
+        Upload
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="enviado; else list">
+  <p>Não existe arquivo disponiveis</p>
+</div>
+
+<ng-template #list>
+  <table mat-table [dataSource]="arquivos">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let item"> {{ item.id }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="nome">
+      <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+      <mat-cell *matCellDef="let item"> {{ item.nome }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="valido">
+      <mat-header-cell *matHeaderCellDef> Valido </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <div>
+          <ng-container *ngIf="item.valido"><mat-icon color="primary">task_alt</mat-icon></ng-container>
+          <ng-container *ngIf="!item.valido"><mat-icon color="warn">unpublished</mat-icon></ng-container>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="enviado">
+      <mat-header-cell *matHeaderCellDef> Enviado </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <div>
+          <ng-container *ngIf="item.enviado"><mat-icon color="primary">task_alt</mat-icon></ng-container>
+          <ng-container *ngIf="!item.enviado"><mat-icon color="warn">unpublished</mat-icon></ng-container>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="acaoValidar">
+      <mat-header-cell *matHeaderCellDef> Validar </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <button (click)="validar(item)" mat-button color="warn" [disabled]="disableValidar"><mat-icon>published_with_changes</mat-icon></button>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="acaoEnviar">
+      <mat-header-cell *matHeaderCellDef> Enviar </mat-header-cell>
+      <mat-cell *matCellDef="let item">
+        <button (click)="enviar(item)" mat-button color="warn" [disabled]="disableEnviar"><mat-icon>send</mat-icon></button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </table>
+</ng-template>

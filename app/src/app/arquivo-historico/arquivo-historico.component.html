@@ -1,0 +1,39 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+        <li class="breadcrumb-item active">Logs dos Arquivos</li>
+    </ol>
+</nav>
+
+<h2>{{title}}</h2>
+<div *ngIf="loading; else list">
+    <p>Não existem logs disponiveis</p>
+</div>
+
+<ng-template #list>
+    <div *ngIf="feedback.message" class="alert alert-{{feedback.type}}">{{ feedback.message }}</div>
+    <table mat-table [dataSource]="logs">
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{ item.id }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="criadoEm">
+            <mat-header-cell *matHeaderCellDef> criadoEm </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{ item.criadoEm }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="arquivoId">
+            <mat-header-cell *matHeaderCellDef> Arquivo ID </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{ item.arquivo.id }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="acao">
+            <mat-header-cell *matHeaderCellDef> Ação </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{ item.acao }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="mensagem">
+            <mat-header-cell *matHeaderCellDef> Mensagem </mat-header-cell>
+            <mat-cell *matCellDef="let item"> {{ item.mensagem }} </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </table>
+</ng-template>
